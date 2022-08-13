@@ -52,7 +52,7 @@ with right_column:
     st.subheader(f"Maximum Time:    {max_time} s")
     st.subheader(f"Minimum Time:    {min_time} s")
 
-
+# Data plot of Maximum & Minimum time taken by each function
 left_column, right_column = st.columns(2)
 
 with left_column:
@@ -78,8 +78,9 @@ with right_column:
 
 st.markdown("---")
 
-# Data Plot of overall metrics (i.e total , min, max, average)
-st.header(":bar_chart: Functions & Performance Relation")
+# Display filter according to selected function
+st.header(":bar_chart: Filter Data By Function")
+
 
 
 
