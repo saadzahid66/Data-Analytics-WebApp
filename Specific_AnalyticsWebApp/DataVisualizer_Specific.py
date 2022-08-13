@@ -1,10 +1,9 @@
-from email.policy import default
-from pickle import TRUE
 import streamlit as st
 import pandas as pd
 import plotly_express as px
 
-
+from datetime import date
+from plotly import graph_objs as go
 
 # --- Functions --- 
 
@@ -18,6 +17,13 @@ def load_selected_function(selected_function):
     df_selected_function = df_uploaded.query("Function == @selected_function")
 
     return df_selected_function
+
+def plot_selected_data(df_selected_function):
+    fig_selected_function = go.Figure()
+    fig_selected_function.add_trace( go.Scatter( x=df_selected_function['time_stamp'], y=df_selected_function['Time'], name='time(s)' ) )
+    fig_selected_function.layout.update( xaxis_rangeslider_visible=True )
+
+    st.plotly_chart(fig_selected_function)
 
 
 # --- WEB PAGE SETTINGS ---
@@ -104,6 +110,14 @@ with left_column_selection:
     st.dataframe(df_selected_function)
 
 with right_column_selection:
+    st.subheader(":chart_with_upwards_trend:Time vs TimeStamp")
+    plot_selected_data(df_selected_function)
+
+# Data plot of Function;s Time vs Timestamp
+
+left_column_selection, middle_column_selection, right_column_selection = st.columns(3)
+
+with left_column_selection:
     st.subheader(":clipboard:Overall Performance Metrics")
     st.markdown("##")
 
@@ -118,5 +132,7 @@ with right_column_selection:
     st.subheader(f"Minimum Time:    {min_time} s")
 
 
-
 st.markdown("---")
+
+
+
