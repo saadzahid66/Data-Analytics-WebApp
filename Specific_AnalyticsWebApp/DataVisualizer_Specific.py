@@ -8,7 +8,7 @@ from plotly import graph_objs as go
 
 
 
-# --- Variables ---
+# --- Helpful Variables ---
 
 options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "main.py (API)  collection_exists", "main.py (API)  db_get_newest_entry", "main.py (API)  read_from_db", "main.py (API)  recommendation", "main.py (API)  ai_cosin_sim", "main.py (API)  read_from_db_by_date", "main.py (API)  db_get_articles_by_url",
                         "get_newest_articles_api.py get_keywords", "get_newest_articles_api.py save_to_db", "get_newest_articles_api.py db_check_not_empty", "get_newest_articles_api.py db_get_newest_entry", "get_newest_articles_api.py get", "get_newest_articles_api.py main", 
@@ -16,7 +16,9 @@ options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "mai
                         "daily_sdct.py (categories and keywords)  save_to_db", "daily_sdct.py (categories and keywords)  read_from_db"  
                     )
 
-# --- Functions --- 
+
+
+# --- Utility Functions --- 
 
 # File Uploading Section
 def upload_data():
@@ -37,7 +39,9 @@ def plot_selected_data(df_selected_function):
     st.plotly_chart(fig_selected_function, use_container_width=True )
 
 
-# --- WEB PAGE SETTINGS ---
+
+
+# --- WEB PAGE SETTINGS & MAIN CODE ---
 
 # Page Layout Settings
 st.set_page_config( page_title='Data Visualizer' , page_icon=':bar_chart:', layout='wide' )
@@ -45,6 +49,7 @@ st.title(":bar_chart: Data Visualizer")
 st.text("This web application designed to present & visualize performance metrics of specifically formatted data sets. To view the data in full-screen please click the button on top-right of each widget.")
 st.markdown("---")
 st.markdown("##")
+
 
 # File Upload Section
 st.header(":bar_chart: Dataset Analysis")
@@ -133,6 +138,7 @@ selected_function = st.selectbox( "Select Function To Load Data", options_functi
 state_selected_function = st.text("Select Filter...")
 df_selected_function = load_selected_function(selected_function)
 
+
 # Data display & overall metrics display
 left_column_selection, right_column_selection = st.columns(2)
 
@@ -154,11 +160,10 @@ with right_column_selection:
     st.subheader(f"Maximum Time:    {max_time} s")
     st.subheader(f"Minimum Time:    {min_time} s")
 
+
 # Data plot of Function;s Time vs Timestamp
 st.subheader(":chart_with_upwards_trend:Time vs TimeStamp")
 plot_selected_data(df_selected_function)
-
-
 
 st.markdown("---")
 
