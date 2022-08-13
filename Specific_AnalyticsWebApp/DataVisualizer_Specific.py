@@ -1,3 +1,5 @@
+from email.policy import default
+from pickle import TRUE
 import streamlit as st
 import pandas as pd
 import plotly_express as px
@@ -24,6 +26,7 @@ def load_selected_function(selected_function):
 st.set_page_config( page_title='Data Visualizer' , page_icon=':bar_chart:', layout='wide' )
 st.title(":bar_chart: Data Visualizer")
 st.subheader("Web application designed to present & visualize performance metrics of CSV formatted data sets.")
+st.markdown("---")
 st.markdown("##")
 
 # File Upload Section
@@ -81,6 +84,38 @@ st.markdown("---")
 # Display filter according to selected function
 st.header(":bar_chart: Filter Data By Function")
 
+options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "main.py (API)  collection_exists", "main.py (API)  db_get_newest_entry", "main.py (API)  read_from_db", "main.py (API)  recommendation", "main.py (API)  ai_cosin_sim", "main.py (API)  read_from_db_by_date", "main.py (API)  db_get_articles_by_url",
+                        "get_newest_articles_api.py get_keywords", "get_newest_articles_api.py save_to_db", "get_newest_articles_api.py db_check_not_empty", "get_newest_articles_api.py db_get_newest_entry", "get_newest_articles_api.py get", "get_newest_articles_api.py main", 
+                        "get_ge_data.py ga_api", "get_ge_data.py save_to_db", "get_ge_data.py main",
+                        "daily_sdct.py (categories and keywords)  save_to_db", "daily_sdct.py (categories and keywords)  read_from_db"  
+                    )
+
+selected_function = st.selectbox( "Select Function To Load Data", options_functions )
+
+state_selected_function = st.text("Select Filter...")
+df_selected_function = load_selected_function(selected_function)
+state_selected_function.text("Loading Complete!")
+
+# Data display & overall metrics display
+left_column_selection, right_column_selection = st.columns(2)
+
+with left_column_selection:
+    st.subheader(f":open_file_folder: Function '{selected_function}'")
+    st.dataframe(df_selected_function)
+
+with right_column_selection:
+    st.subheader(":clipboard:Overall Performance Metrics")
+    st.markdown("##")
+
+    total_time = int( df_selected_function['Time'].sum() )
+    min_time = float( df_selected_function['Time'].min() )
+    max_time = float( df_selected_function['Time'].max() )
+    avg_time = float( total_time / len(df_selected_function) )
+
+    st.subheader(f"Total Time:  {total_time} s")
+    st.subheader(f"Average Time:    {avg_time} s")
+    st.subheader(f"Maximum Time:    {max_time} s")
+    st.subheader(f"Minimum Time:    {min_time} s")
 
 
 
