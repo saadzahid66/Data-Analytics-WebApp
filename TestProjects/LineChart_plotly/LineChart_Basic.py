@@ -6,6 +6,9 @@ from datetime import date
 from plotly import graph_objs as go
 
 
+
+# --- Functions --- 
+
 # File Uploading Section
 def upload_data():
     df = pd.read_csv( r".docs\merged_sorted_formatted.csv" )
@@ -16,6 +19,22 @@ def load_selected_function(selected_function):
     df_selected_function = df_uploaded.query("Function == @selected_function")
 
     return df_selected_function
+
+# Data Plotting
+def plot_raw_data():
+    fig_raw = go.Figure()
+    fig_raw.add_trace(go.Scatter(x=df_uploaded['time_stamp']), y=df_uploaded['Time'], name='time(s)' )
+    fig_raw.layout.update(title_text="Raw Data Plotter", xaxis_rangeslider_visible=True)
+
+    st.plotly_chart(fig_raw)
+
+def plot_selected_data():
+    fig_selected = go.Figure()
+    fig_selected.add_trace(go.Scatter(x=df_uploaded['time_stamp'], y=df_uploaded['Time'], name='time(s)'))
+    fig_selected.layout.update(title_text="Raw Data Plotter", xaxis_rangeslider_visible=True)
+
+    st.plotly_chart(fig_selected)
+
 
 
 # --- Page Settings ---
@@ -43,3 +62,15 @@ with right_column:
     df_selected_function = load_selected_function(selected_function)
 
     st.dataframe(df_selected_function.tail())
+
+# Plot Graph For Sorted Dataframe
+st.header("Plot Data Frame ")
+left_column, right_column = st.columns(2)
+
+with left_column:
+    st.subheader("Plot Raw Data")
+    # plot_raw_data() Note: This wont work, find another fix
+
+with right_column:
+    st.subheader("Plot Raw Data: July,2022")
+    plot_selected_data()
