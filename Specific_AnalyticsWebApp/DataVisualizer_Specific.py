@@ -27,7 +27,7 @@ st.subheader("Web application designed to present & visualize performance metric
 st.markdown("##")
 
 # File Upload Section
-st.header(":bar_chart: File Upload")
+st.header(":bar_chart: Dataset Analysis")
 
 df_uploaded = upload_data()
 
@@ -53,4 +53,34 @@ with right_column:
     st.subheader(f"Minimum Time:    {min_time} s")
 
 
+left_column, right_column = st.columns(2)
+
+with left_column:
+    st.subheader(":chart_with_upwards_trend:Maximum Time Of Each Function")
+        
+    df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).max()[ ['Time'] ].sort_values( by=['Function'] )
+
+    fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
+    fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True)
+
+    st.plotly_chart(fig_grouped_function_time)
+
+with right_column:
+    st.subheader(":chart_with_upwards_trend:Minimum Time Of Each Function")
+        
+    df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).min()[ ['Time'] ].sort_values( by=['Function'] )
+
+    fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
+    fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True)
+
+    st.plotly_chart(fig_grouped_function_time)
+
+
+st.markdown("---")
+
 # Data Plot of overall metrics (i.e total , min, max, average)
+st.header(":bar_chart: Functions & Performance Relation")
+
+
+
+st.markdown("---")
