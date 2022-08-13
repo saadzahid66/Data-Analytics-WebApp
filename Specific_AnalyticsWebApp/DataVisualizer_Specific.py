@@ -1,9 +1,25 @@
+from contextlib import nullcontext
 import streamlit as st
 import pandas as pd
 import plotly_express as px
 
 from datetime import date
 from plotly import graph_objs as go
+
+
+
+# --- Variables ---
+
+options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "main.py (API)  collection_exists", "main.py (API)  db_get_newest_entry", "main.py (API)  read_from_db", "main.py (API)  recommendation", "main.py (API)  ai_cosin_sim", "main.py (API)  read_from_db_by_date", "main.py (API)  db_get_articles_by_url",
+                        "get_newest_articles_api.py get_keywords", "get_newest_articles_api.py save_to_db", "get_newest_articles_api.py db_check_not_empty", "get_newest_articles_api.py db_get_newest_entry", "get_newest_articles_api.py get", "get_newest_articles_api.py main", 
+                        "get_ge_data.py ga_api", "get_ge_data.py save_to_db", "get_ge_data.py main",
+                        "daily_sdct.py (categories and keywords)  save_to_db", "daily_sdct.py (categories and keywords)  read_from_db"  
+                    )
+
+total_time = 0
+max_time = 0
+min_time = 0
+avg_time = 0
 
 # --- Functions --- 
 
@@ -40,6 +56,7 @@ st.header(":bar_chart: Dataset Analysis")
 
 df_uploaded = upload_data()
 
+
 # Data display & overall metrics display
 left_column, right_column = st.columns(2)
 
@@ -60,6 +77,7 @@ with right_column:
     st.subheader(f"Average Time:    {avg_time} s")
     st.subheader(f"Maximum Time:    {max_time} s")
     st.subheader(f"Minimum Time:    {min_time} s")
+
 
 # Data plot of Maximum & Minimum time taken by each function
 left_column, right_column = st.columns(2)
@@ -87,20 +105,14 @@ with right_column:
 
 st.markdown("---")
 
+
 # Display filter according to selected function
 st.header(":bar_chart: Filter Data By Function")
-
-options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "main.py (API)  collection_exists", "main.py (API)  db_get_newest_entry", "main.py (API)  read_from_db", "main.py (API)  recommendation", "main.py (API)  ai_cosin_sim", "main.py (API)  read_from_db_by_date", "main.py (API)  db_get_articles_by_url",
-                        "get_newest_articles_api.py get_keywords", "get_newest_articles_api.py save_to_db", "get_newest_articles_api.py db_check_not_empty", "get_newest_articles_api.py db_get_newest_entry", "get_newest_articles_api.py get", "get_newest_articles_api.py main", 
-                        "get_ge_data.py ga_api", "get_ge_data.py save_to_db", "get_ge_data.py main",
-                        "daily_sdct.py (categories and keywords)  save_to_db", "daily_sdct.py (categories and keywords)  read_from_db"  
-                    )
 
 selected_function = st.selectbox( "Select Function To Load Data", options_functions )
 
 state_selected_function = st.text("Select Filter...")
 df_selected_function = load_selected_function(selected_function)
-state_selected_function.text("Loading Complete!")
 
 # Data display & overall metrics display
 left_column_selection, right_column_selection = st.columns(2)
@@ -110,14 +122,6 @@ with left_column_selection:
     st.dataframe(df_selected_function)
 
 with right_column_selection:
-    st.subheader(":chart_with_upwards_trend:Time vs TimeStamp")
-    plot_selected_data(df_selected_function)
-
-# Data plot of Function;s Time vs Timestamp
-
-left_column_selection, middle_column_selection, right_column_selection = st.columns(3)
-
-with left_column_selection:
     st.subheader(":clipboard:Overall Performance Metrics")
     st.markdown("##")
 
@@ -130,6 +134,11 @@ with left_column_selection:
     st.subheader(f"Average Time:    {avg_time} s")
     st.subheader(f"Maximum Time:    {max_time} s")
     st.subheader(f"Minimum Time:    {min_time} s")
+
+# Data plot of Function;s Time vs Timestamp
+st.subheader(":chart_with_upwards_trend:Time vs TimeStamp")
+plot_selected_data(df_selected_function)
+
 
 
 st.markdown("---")
