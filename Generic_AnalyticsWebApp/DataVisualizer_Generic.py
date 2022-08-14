@@ -1,5 +1,3 @@
-import requests as req
-import streamlit_lottie as st_lottie
 import streamlit as st
 import pandas as pd
 import plotly_express as px
