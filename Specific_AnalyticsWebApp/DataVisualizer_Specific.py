@@ -30,8 +30,6 @@ def upload_data():
     except Exception as e:
         st.text(f"Please Upload CSV File To Continue...")
 
-
-
 def load_selected_function(selected_function):
     df_selected_function = df_uploaded.query("Function == @selected_function")
 
