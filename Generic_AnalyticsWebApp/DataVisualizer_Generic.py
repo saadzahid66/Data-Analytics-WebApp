@@ -90,7 +90,7 @@ with left_column_page:
     
 
 with right_column_page:
-    dashboard_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\dash_small.png')
+    dashboard_logo = img.open('dash_small.png')
     st.image(dashboard_logo)
 
     
@@ -99,7 +99,7 @@ with right_column_page:
 
 # File Upload Section
 with st.sidebar:
-    streamlit_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\streamlit-logo-nbg.png')
+    streamlit_logo = img.open('streamlit-logo-nbg.png')
     
     st.image(streamlit_logo)
     st.title("streamlit - Data Visualizer")
@@ -128,7 +128,7 @@ if df_uploaded is not None:
         calculate_metadata(df_uploaded)
 else:
 
-    waiting_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\Waiting.png')
+    waiting_logo = img.open('Waiting.png')
 
     st.subheader("Waiting For File...!")
     st.image(waiting_logo)
