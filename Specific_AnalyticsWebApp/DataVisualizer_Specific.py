@@ -1,5 +1,3 @@
-from contextlib import nullcontext
-from turtle import goto
 import streamlit as st
 import pandas as pd
 import plotly_express as px
