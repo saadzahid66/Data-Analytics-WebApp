@@ -14,7 +14,8 @@ from PIL import Image as img
 
 # Pre-written List of Functions
 
-information_text = "This web application designed to present & visualize performance metrics of specific CSV data set ('merged_sorted.csv') present in the Git repo. To view the data in full-screen please click the button on top-right of each widget. The columns, rows & values were not formatted or truncated to keep authenticity. However, the data-set was altered to retain only useful information & decrease load times. Your feedback is much awaited. Thankyou for giving the opprotunity to do something new."
+information_text = "This web application designed to present & visualize performance metrics of specific CSV data set ('merged_sorted.csv') present in the Git repo. To view the data in full-screen please click the button on top-right of each widget.  Your feedback is much awaited. Thankyou for giving the opprotunity to do something new."
+data_display_text = "The columns, rows & values were not formatted or truncated to keep dataset authenticity. However, the data-set was altered to retain only useful information & decrease load times. Also, not HTML CSS elements were used to keep the usage of streamlit as a priority."
 
 lottie_anim_hello = 'https://assets9.lottiefiles.com/packages/lf20_49rdyysj.json'
 
@@ -86,16 +87,29 @@ def load_lottie(lottie_url):
 
 # Page Layout Settings
 st.set_page_config( page_title='Data Visualizer' , page_icon=':bar_chart:', layout='wide' )
-st.title(":bar_chart: Data Visualizer")
-st.markdown(information_text)
-st.markdown("---")
-st.markdown("##")
+
+left_column_page, right_column_page= st.columns(2)
+with left_column_page:
+    st.title(":bar_chart: Data Visualizer")
+    st.markdown(information_text)
+    st.markdown(data_display_text)
+    
+    
+
+with right_column_page:
+    dashboard_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\dash_small.png')
+    st.image(dashboard_logo)
+
+    
+    
 
 
 # File Upload Section
 with st.sidebar:
-    streamlit_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\streamlit-logo.png')
+    streamlit_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\streamlit-logo-nbg.png')
+    
     st.image(streamlit_logo)
+    st.title("streamlit - Data Visualizer")
     st.markdown("##")
 
     st.header(":page_facing_up: Upload File")
@@ -104,6 +118,7 @@ with st.sidebar:
 
 
 # Data display & overall metrics display
+st.markdown("---")
 if df_uploaded is not None:
     st.header(":bar_chart: Dataset Analysis")
 
@@ -119,7 +134,12 @@ if df_uploaded is not None:
 
         calculate_metadata(df_uploaded)
 else:
-    st_lottie(load_lottie(lottie_anim_hello), key='hello')
+
+    waiting_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\Waiting.png')
+
+    st.subheader("Waiting For File...!")
+    st.image(waiting_logo)
+    #st_lottie(load_lottie(lottie_anim_hello), key='hello') Note: doesnt work with url or json
 
 
 # Data plot of Maximum & Minimum time taken by each function
