@@ -11,6 +11,9 @@ from PIL import Image as img
 # --- Helpful Variables ---
 
 # Pre-written List of Functions
+title_dashboard_logo ='D:\Work\Python\Data Analytics WebApp\.resources\dash_small.png'
+sidebar_streamlit_logo = 'D:\Work\Python\Data Analytics WebApp\.resources\streamlit-logo-nbg.png'
+main_waiting_logo = 'D:\Work\Python\Data Analytics WebApp\.resources\Waiting.png'
 
 information_text = "This web application designed to present & visualize performance metrics of specific CSV data set ('merged_sorted.csv') present in the Git repo. To view the data in full-screen please click the button on top-right of each widget.  Your feedback is much awaited. Thankyou for giving the opprotunity to do something new."
 data_display_text = "The columns, rows & values were not formatted or truncated to keep dataset authenticity. However, the data-set was altered to retain only useful information & decrease load times. Also, not HTML CSS elements were used to keep the usage of streamlit as a priority."
@@ -84,7 +87,7 @@ with left_column_page:
     
 
 with right_column_page:
-    dashboard_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\dash_small.png')
+    dashboard_logo = img.open(title_dashboard_logo)
     st.image(dashboard_logo)
 
     
@@ -93,7 +96,7 @@ with right_column_page:
 
 # File Upload Section
 with st.sidebar:
-    streamlit_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\streamlit-logo-nbg.png')
+    streamlit_logo = img.open(sidebar_streamlit_logo)
     
     st.image(streamlit_logo)
     st.title("streamlit - Data Visualizer")
@@ -122,7 +125,7 @@ if df_uploaded is not None:
         calculate_metadata(df_uploaded)
 else:
 
-    waiting_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\Waiting.png')
+    waiting_logo = img.open(main_waiting_logo)
 
     st.subheader("Waiting For File...!")
     st.image(waiting_logo)
