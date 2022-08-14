@@ -1,9 +1,12 @@
+import requests as req
+import streamlit_lottie as st_lottie
 import streamlit as st
 import pandas as pd
 import plotly_express as px
 
 from datetime import date
 from plotly import graph_objs as go
+from PIL import Image as img
 
 
 
@@ -24,12 +27,12 @@ options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "mai
 
 # File Uploading Section
 def upload_data():
-    file = st.file_uploader(" ", type="csv")
+    file = st.file_uploader("Please upload csv file to continue...", type="csv")
     try:
         df = pd.read_csv( file )
         return df
     except Exception as e:
-        st.text(f"Please Upload CSV File To Continue...")
+        st.text(f"")
 
 # Filters & displays data according to selected function
 def load_selected_function(selected_function):
@@ -84,13 +87,20 @@ st.markdown("##")
 
 
 # File Upload Section
-st.header(":bar_chart: Dataset Analysis")
+with st.sidebar:
+    streamlit_logo = img.open('D:\Work\Python\Data Analytics WebApp\.resources\streamlit-logo.png')
+    st.image(streamlit_logo)
+    st.markdown("##")
 
-df_uploaded = upload_data()
+    st.header(":page_facing_up: Upload File")
+    df_uploaded = upload_data()
+
 
 
 # Data display & overall metrics display
 if df_uploaded is not None:
+    st.header(":bar_chart: Dataset Analysis")
+
     left_column, right_column = st.columns(2)
 
     with left_column:
