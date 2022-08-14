@@ -173,6 +173,15 @@ if df_uploaded is not None:
 
 # Display filter according to selected function
 if df_uploaded is not None:
+
+    with st.sidebar:
+        st.header(":page_facing_up: Select Function")
+
+        selected_function = st.selectbox( "Please select a function for analysis...", options_functions )
+    
+        df_selected_function = load_selected_function(selected_function)
+
+
     st.header(":bar_chart: Filter Data By Function")
 
     state_selected_function = st.text("Please Select A Function From List To Analyze...")
