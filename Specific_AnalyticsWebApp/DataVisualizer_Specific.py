@@ -22,7 +22,8 @@ options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "mai
 
 # File Uploading Section
 def upload_data():
-    df = pd.read_csv( r".docs\merged_sorted.csv" )
+    file = open(r'.docs\merged_sorted.csv')
+    df = pd.read_csv( file )
 
     return df
 
