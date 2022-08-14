@@ -1,4 +1,5 @@
 from contextlib import nullcontext
+from turtle import goto
 import streamlit as st
 import pandas as pd
 import plotly_express as px
@@ -22,10 +23,16 @@ options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "mai
 
 # File Uploading Section
 def upload_data():
-    file = open(r'.docs\merged_sorted.csv')
-    df = pd.read_csv( file )
 
-    return df
+    file = st.file_uploader(" ", type="csv")
+
+    try:
+        df = pd.read_csv( file )
+        return df
+    except Exception as e:
+        st.text(f"Please Upload CSV File To Continue...")
+
+
 
 def load_selected_function(selected_function):
     df_selected_function = df_uploaded.query("Function == @selected_function")
@@ -59,114 +66,120 @@ df_uploaded = upload_data()
 
 
 # Data display & overall metrics display
-left_column, right_column = st.columns(2)
+if df_uploaded is not None:
+    left_column, right_column = st.columns(2)
 
-with left_column:
-    st.subheader(":open_file_folder:File Opened 'merged_sorted.csv'")
-    st.dataframe(df_uploaded)
+    with left_column:
+        st.subheader(":open_file_folder:File Opened 'merged_sorted.csv'")
+        st.dataframe(df_uploaded)
 
-with right_column:
-    st.subheader(":clipboard:Overall Performance Metrics")
-    st.markdown("##")
+    with right_column:
+        st.subheader(":clipboard:Overall Performance Metrics")
+        st.markdown("##")
 
-    total_time = int( df_uploaded['Time'].sum() )
-    min_time = float( df_uploaded['Time'].min() )
-    max_time = float( df_uploaded['Time'].max() )
-    avg_time = float( df_uploaded['Time'].mean() )
+        total_time = int( df_uploaded['Time'].sum() )
+        min_time = float( df_uploaded['Time'].min() )
+        max_time = float( df_uploaded['Time'].max() )
+        avg_time = float( df_uploaded['Time'].mean() )
 
-    st.text(f"Total Time:  {total_time} s")
-    st.text(f"Average Time:    {avg_time} s")
-    st.text(f"Maximum Time:    {max_time} s")
-    st.text(f"Minimum Time:    {min_time} s")
-
-
-# Data plot of Maximum & Minimum time taken by each function
-left_column, right_column = st.columns(2)
-
-with left_column:
-    st.subheader(":chart_with_upwards_trend:Maximum Time Of Each Function")
-        
-    df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).max()[ ['Time'] ].sort_values( by=['Function'] )
-
-    fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
-    fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True )
-
-    st.plotly_chart(fig_grouped_function_time)
-
-with right_column:
-    st.subheader(":chart_with_upwards_trend:Minimum Time Of Each Function")
-        
-    df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).min()[ ['Time'] ].sort_values( by=['Function'] )
-
-    fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
-    fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True)
-
-    st.plotly_chart(fig_grouped_function_time)
+        st.text(f"Total Time:  {total_time} s")
+        st.text(f"Average Time:    {avg_time} s")
+        st.text(f"Maximum Time:    {max_time} s")
+        st.text(f"Minimum Time:    {min_time} s")
 
 
 # Data plot of Maximum & Minimum time taken by each function
-left_column, right_column = st.columns(2)
+if df_uploaded is not None:
+    left_column, right_column = st.columns(2)
 
-with left_column:
-    st.subheader(":chart_with_upwards_trend:Total Time Of Each Function")
-        
-    df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).sum()[ ['Time'] ].sort_values( by=['Function'] )
+    with left_column:
+        st.subheader(":chart_with_upwards_trend:Maximum Time Of Each Function")
+            
+        df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).max()[ ['Time'] ].sort_values( by=['Function'] )
 
-    fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
-    fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True)
+        fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
+        fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True )
 
-    st.plotly_chart(fig_grouped_function_time)
+        st.plotly_chart(fig_grouped_function_time)
 
-with right_column:
-    st.subheader(":chart_with_upwards_trend:Mean Time Of Each Function")
-        
-    df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).mean()[ ['Time'] ].sort_values( by=['Function'] )
+    with right_column:
+        st.subheader(":chart_with_upwards_trend:Minimum Time Of Each Function")
+            
+        df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).min()[ ['Time'] ].sort_values( by=['Function'] )
 
-    fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
-    fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True)
+        fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
+        fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True)
 
-    st.plotly_chart(fig_grouped_function_time)
+        st.plotly_chart(fig_grouped_function_time)
 
 
-st.markdown("---")
+# Data plot of Maximum & Minimum time taken by each function
+if df_uploaded is not None:
+    left_column, right_column = st.columns(2)
+
+    with left_column:
+        st.subheader(":chart_with_upwards_trend:Total Time Of Each Function")
+            
+        df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).sum()[ ['Time'] ].sort_values( by=['Function'] )
+
+        fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
+        fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True)
+
+        st.plotly_chart(fig_grouped_function_time)
+
+    with right_column:
+        st.subheader(":chart_with_upwards_trend:Mean Time Of Each Function")
+            
+        df_grouped_function_time = df_uploaded.groupby( by=['Function'] ).mean()[ ['Time'] ].sort_values( by=['Function'] )
+
+        fig_grouped_function_time = px.bar( df_grouped_function_time, x='Time', y= df_grouped_function_time.index, orientation='h', color_discrete_sequence=["#0083B8"] * len(df_grouped_function_time) , template='plotly_white' )
+        fig_grouped_function_time.layout.update( xaxis_rangeslider_visible=True)
+
+        st.plotly_chart(fig_grouped_function_time)
+
+
+    st.markdown("---")
 
 
 # Display filter according to selected function
-st.header(":bar_chart: Filter Data By Function")
+if df_uploaded is not None:
+    st.header(":bar_chart: Filter Data By Function")
 
-selected_function = st.selectbox( "Select Function To Load Data", options_functions )
-
-state_selected_function = st.text("Select Filter...")
-df_selected_function = load_selected_function(selected_function)
+    state_selected_function = st.text("Please Select A Function From List To Analyze...")
+    selected_function = st.selectbox( " ", options_functions )
+    
+    df_selected_function = load_selected_function(selected_function)
 
 
 # Data display & overall metrics display
-left_column_selection, right_column_selection = st.columns(2)
+if df_uploaded is not None:
+    left_column_selection, right_column_selection = st.columns(2)
 
-with left_column_selection:
-    st.subheader(f":open_file_folder: Function '{selected_function}'")
-    st.dataframe(df_selected_function)
+    with left_column_selection:
+        st.subheader(f":open_file_folder: Function '{selected_function}'")
+        st.dataframe(df_selected_function)
 
-with right_column_selection:
-    st.subheader(":clipboard:Overall Performance Metrics")
-    st.markdown("##")
+    with right_column_selection:
+        st.subheader(":clipboard:Overall Performance Metrics")
+        st.markdown("##")
 
-    total_time = int( df_selected_function['Time'].sum() )
-    min_time = float( df_selected_function['Time'].min() )
-    max_time = float( df_selected_function['Time'].max() )
-    avg_time = float( df_selected_function['Time'].mean() )
+        total_time = int( df_selected_function['Time'].sum() )
+        min_time = float( df_selected_function['Time'].min() )
+        max_time = float( df_selected_function['Time'].max() )
+        avg_time = float( df_selected_function['Time'].mean() )
 
-    st.subheader(f"Total Time:  {total_time} s")
-    st.subheader(f"Average Time:    {avg_time} s")
-    st.subheader(f"Maximum Time:    {max_time} s")
-    st.subheader(f"Minimum Time:    {min_time} s")
+        st.subheader(f"Total Time:  {total_time} s")
+        st.subheader(f"Average Time:    {avg_time} s")
+        st.subheader(f"Maximum Time:    {max_time} s")
+        st.subheader(f"Minimum Time:    {min_time} s")
 
 
-# Data plot of Function;s Time vs Timestamp
-st.subheader(":chart_with_upwards_trend:Time vs TimeStamp")
-plot_selected_data(df_selected_function)
+    # Data plot of Function;s Time vs Timestamp
+if df_uploaded is not None:
+    st.subheader(":chart_with_upwards_trend:Time vs TimeStamp")
+    plot_selected_data(df_selected_function)
 
-st.markdown("---")
+    st.markdown("---")
 
 
 
