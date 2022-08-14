@@ -16,6 +16,8 @@ from PIL import Image as img
 
 information_text = "This web application designed to present & visualize performance metrics of specific CSV data set ('merged_sorted.csv') present in the Git repo. To view the data in full-screen please click the button on top-right of each widget. The columns, rows & values were not formatted or truncated to keep authenticity. However, the data-set was altered to retain only useful information & decrease load times. Your feedback is much awaited. Thankyou for giving the opprotunity to do something new."
 
+lottie_anim_hello = 'https://assets9.lottiefiles.com/packages/lf20_49rdyysj.json'
+
 options_functions = (   "main.py (API)  main", "main.py (API)  save_to_db", "main.py (API)  collection_exists", "main.py (API)  db_get_newest_entry", "main.py (API)  read_from_db", "main.py (API)  recommendation", "main.py (API)  ai_cosin_sim", "main.py (API)  read_from_db_by_date", "main.py (API)  db_get_articles_by_url",
                         "get_newest_articles_api.py get_keywords", "get_newest_articles_api.py save_to_db", "get_newest_articles_api.py db_check_not_empty", "get_newest_articles_api.py db_get_newest_entry", "get_newest_articles_api.py get", "get_newest_articles_api.py main", 
                         "get_ge_data.py ga_api", "get_ge_data.py save_to_db", "get_ge_data.py main",
@@ -72,8 +74,12 @@ def plot_selected_data(df_selected_function):
 
     st.plotly_chart(fig_selected_function, use_container_width=True )
 
+def load_lottie(lottie_url):
+    r = req.get(lottie_url)
 
-
+    if r.status_code !=200:
+        return None
+    return r.json()
 
 
 # --- WEB PAGE SETTINGS & MAIN CODE ---
@@ -112,6 +118,8 @@ if df_uploaded is not None:
         st.markdown("##")
 
         calculate_metadata(df_uploaded)
+else:
+    st_lottie(load_lottie(lottie_anim_hello), key='hello')
 
 
 # Data plot of Maximum & Minimum time taken by each function
