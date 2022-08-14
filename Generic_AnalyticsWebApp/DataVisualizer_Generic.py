@@ -68,12 +68,6 @@ def plot_selected_data(df_selected_function):
 
     st.plotly_chart(fig_selected_function, use_container_width=True )
 
-def load_lottie(lottie_url):
-    r = req.get(lottie_url)
-
-    if r.status_code !=200:
-        return None
-    return r.json()
 
 
 # --- WEB PAGE SETTINGS & MAIN CODE ---
